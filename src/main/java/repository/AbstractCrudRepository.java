@@ -11,7 +11,7 @@ public abstract class AbstractCrudRepository <ID, E extends HasID<ID>> implement
      * Class constructor
      */
     AbstractCrudRepository(){
-        this.elemente = new HashMap<>();
+        this.elemente = new HashMap<ID, E>();
     }
 
     /**

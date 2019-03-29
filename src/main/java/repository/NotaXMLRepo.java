@@ -5,7 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.time.LocalDate;
+import org.joda.time.LocalDate;
 
 public class NotaXMLRepo extends AbstractXMLRepository<String, Nota> {
 
@@ -71,7 +71,7 @@ public class NotaXMLRepo extends AbstractXMLRepository<String, Nota> {
                 .getTextContent();
 
         String[] d = data.split("-");
-        LocalDate dat = LocalDate.of(Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]));
+        LocalDate dat = new LocalDate(Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]));
 
         return new Nota(id,studentId,temaId,Double.parseDouble(notaProf),dat);
         }

@@ -6,8 +6,9 @@ import domain.Tema;
 import service.Service;
 import validation.ValidationException;
 
-import java.time.LocalDate;
+import org.joda.time.LocalDate;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -178,10 +179,14 @@ public class UI {
      * Afiseaza lista studentilor
      */
     private void afisareStudenti() {
-        Iterable<Student> all = service.getAllStudenti();
-        all.forEach(student ->
-                System.out.println(student)
-        );
+        Iterator<Student> all = service.getAllStudenti().iterator();
+        while(all.hasNext()){
+            System.out.println(all.next());
+
+        }
+//        all.forEach(student ->
+//                System.out.println(student)
+//        );
     }
 
     /**
@@ -320,11 +325,13 @@ public class UI {
      * Afiseaza toate temele
      */
     private void afisareTeme(){
-        Iterable<Tema> all = service.getAllTeme();
+        Iterator<Tema> all = service.getAllTeme().iterator();
         //for(Tema tema: all){
         //    System.out.println(tema);
         //}
-        all.forEach(tema -> System.out.println(tema));
+        while(all.hasNext())
+            System.out.println(all.next());
+        //all.forEach(tema -> System.out.println(tema));
     }
 
     /**
@@ -375,7 +382,7 @@ public class UI {
         System.out.print("Introduceti data predarii temei(format: an-luna-data): ");
         String data = scanner.next();
         String[] date = data.split("-");
-        LocalDate dataPredare = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+        LocalDate dataPredare = new LocalDate(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
         System.out.print("Introduceti feedback: ");
         scanner.nextLine();
         String feedback = scanner.nextLine();        //System.out.println(feedback);
@@ -424,9 +431,11 @@ public class UI {
      * Afiseaza toate notele
      */
     private void afisareNote() {
-        Iterable<Nota> all = service.getAllNote();
-        all.forEach(nota ->
-                System.out.println(nota)
-        );
+        Iterator<Nota> all = service.getAllNote().iterator();
+        while(all.hasNext())
+            System.out.println(all.next());
+//        all.forEach(nota ->
+//                System.out.println(nota)
+//        );
     }
 }

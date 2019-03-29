@@ -12,6 +12,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.util.Iterator;
 
 
 public abstract class AbstractXMLRepository<ID, E extends HasID<ID>> extends AbstractCrudRepository<ID, E> implements FileRepository<ID, E> {
@@ -100,10 +101,16 @@ public abstract class AbstractXMLRepository<ID, E extends HasID<ID>> extends Abs
                     .newDocument();
             Element root  = document.createElement("inbox");
             document.appendChild(root);
-            super.findAll().forEach(e->{
-                Element elem = createElementfromEntity(document,e);
-                root.appendChild(elem);
-            });
+            Iterator<E> iterator = super.findAll().iterator();
+
+            while(iterator.hasNext()){
+                Element element = createElementfromEntity(document, iterator.next());
+                root.appendChild(element);
+            }
+//            super.findAll().forEach(e->{
+//                Element elem = createElementfromEntity(document,e);
+//                root.appendChild(elem);
+//            });
 
             //write Document to file
             Transformer transformer = TransformerFactory.

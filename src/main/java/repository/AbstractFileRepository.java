@@ -3,6 +3,7 @@ package repository;
 import validation.ValidationException;
 
 import java.io.*;
+import java.util.Iterator;
 
 public abstract class AbstractFileRepository<ID, E extends HasID<ID>> extends AbstractCrudRepository<ID, E> implements FileRepository<ID, E> {
 
@@ -28,7 +29,8 @@ public abstract class AbstractFileRepository<ID, E extends HasID<ID>> extends Ab
      * Incarca datele din fisier
      */
     public void loadFromFile(){
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(filename));
             String linie;
             while ((linie = bufferedReader.readLine()) != null) {
                 E entity = extractEntity(linie);
@@ -44,7 +46,8 @@ public abstract class AbstractFileRepository<ID, E extends HasID<ID>> extends Ab
      * @param entity - obiectul pe care il scrie
      */
     public void saveToFile(E entity){
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true))) {
+        try  {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true));
             bufferedWriter.write(entity.toString());
             bufferedWriter.newLine();
         } catch (IOException exception) {
@@ -56,9 +59,12 @@ public abstract class AbstractFileRepository<ID, E extends HasID<ID>> extends Ab
      * Rescrie fisierul cu toate obiectele din memorie
      */
     public void writeToFile(){
-        try (PrintWriter b = new PrintWriter(this.filename)) {
-            //Iterable<E> all = super.findAll();
-            super.findAll().forEach(e -> b.println(e.toString()));
+        try  {
+            PrintWriter b = new PrintWriter(this.filename);
+            Iterator<E> all = super.findAll().iterator();
+            while(all.hasNext())
+                b.println(all.next().toString());
+            //super.findAll().forEach(e -> b.println(e.toString()));
         }
             catch (IOException exception) {
             throw new ValidationException(exception.getMessage());

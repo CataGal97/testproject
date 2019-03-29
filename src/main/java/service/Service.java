@@ -4,6 +4,7 @@ import curent.Curent;
 import domain.Nota;
 import domain.Student;
 import domain.Tema;
+import org.joda.time.Days;
 import repository.NotaXMLRepo;
 import repository.StudentXMLRepo;
 import repository.TemaXMLRepo;
@@ -15,9 +16,8 @@ import validation.ValidationException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
+import org.joda.time.LocalDate;
 
-import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * Clasa Service
@@ -175,7 +175,8 @@ public class Service {
         }
         notaFileRepository.save(nota);
         String filename = "fisiere/" + student.getNume() + ".txt";
-        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true))){
+        try{
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true));
             bufferedWriter.write("\nTema: " + tema.getID());
             bufferedWriter.write("\nNota: " + nota.getNota());
             bufferedWriter.write("\nPredata in saptamana: " + predare);
@@ -246,7 +247,8 @@ public class Service {
      */
     private int calculeazaSPredare(LocalDate predare) {
         LocalDate startDate = Curent.getStartDate();
-        long days = DAYS.between(startDate, predare);
+
+        long days = Days.daysBetween(startDate, predare).getDays();
         double saptamanaPredare = Math.ceil((double)days/7);
         return (int)saptamanaPredare;
     }
